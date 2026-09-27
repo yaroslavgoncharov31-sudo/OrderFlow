@@ -1,33 +1,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var path = NavigationPath()
-    @State private var order = Order()
+    @State private var viewModel = ContentView.ViewModel()
 
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack(path: $viewModel.path) {
             Form {
                 Section {
-                    Picker("Select your cake type", selection: $order.type) {
+                    Picker("Select your cake type", selection: $viewModel.order.type) {
                         ForEach(CupcakeType.allCases, id: \.self) { flavour in
                             Text(flavour.rawValue)
                                 .tag(flavour)
                         }
                     }
-                    Stepper("Number of cakes: \(order.quantity)", value: $order.quantity, in: 3...20)
+                    Stepper("Number of cakes: \(viewModel.order.quantity)", value: $viewModel.order.quantity, in: 3...20)
                 }
                 Section {
-                    Toggle("Any special requests?", isOn: $order.specialRequestEnabled.animation())
+                    Toggle("Any special requests?", isOn: $viewModel.order.specialRequestEnabled.animation())
 
-                    if order.specialRequestEnabled {
-                        Toggle("Add extra frosting", isOn:  $order.extraFrosting.animation())
+                    if viewModel.order.specialRequestEnabled {
+                        Toggle("Add extra frosting", isOn:  $viewModel.order.extraFrosting.animation())
 
-                        Toggle("Add extra sprinkles", isOn:  $order.addSprinkles.animation())
-                    } 
+                        Toggle("Add extra sprinkles", isOn:  $viewModel.order.addSprinkles.animation())
+                    }
                 }
                 Section {
                     Button("Adress details") {
-                        path.append(Route.addressView)
+                        viewModel.path.append(Route.addressView)
                     }
                 }
             }
@@ -35,9 +34,9 @@ struct ContentView: View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .addressView:
-                    AddressView(order: order, path: $path)
+                    AddressView(order: viewModel.order, path: $viewModel.path)
                 case .checkoutView:
-                    CheckoutView(order: order, path: $path)
+                    CheckoutView(order: viewModel.order, path: $viewModel.path)
                 }
             }
         }

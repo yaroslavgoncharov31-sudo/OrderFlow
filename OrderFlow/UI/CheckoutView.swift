@@ -2,11 +2,17 @@ import SwiftUI
 
 struct CheckoutView: View {
     var order: Order
-    @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
-    @State private var orderWasPlaced = false
     @State private var isPlacingOrder = false
+    @State private var viewModel: ViewModel
+
     @Binding var path: NavigationPath
+
+    init(order: Order, path: Binding<NavigationPath>, orderPlacer: OrderPlacing = NetworkManager()) {
+        self.order = order
+        self._path = path
+        self._viewModel = State(initialValue: ViewModel(order: order, orderPlacer: orderPlacer))
+    }
 
     var body: some View {
         ScrollView {
@@ -41,13 +47,13 @@ struct CheckoutView: View {
         .scrollBounceBehavior(.basedOnSize)
         .alert("Order status", isPresented: $showingConfirmation) {
             Button("OK") {
-                if orderWasPlaced {
+                if viewModel.orderWasPlaced {
                     path = NavigationPath()
                     order.reset()
                 }
             }
         } message: {
-            Text(confirmationMessage)
+            Text(viewModel.confirmationMessage)
         }
     }
     private func placeOrder() async {
@@ -55,18 +61,35 @@ struct CheckoutView: View {
         defer { isPlacingOrder = false }
 
         do {
-            let finalOrder = try await NetworkManager.placeOrder(order: order)
-            confirmationMessage = "Your order for \(finalOrder.quantity)x \(finalOrder.type.rawValue) cupcakes is on its way!"
-            orderWasPlaced = true
+            let finalOrder = try await viewModel.orderPlacer.placeOrder(order: order)
+            viewModel.confirmationMessage = "Your order for \(finalOrder.quantity)x \(finalOrder.type.rawValue) cupcakes is on its way!"
+            viewModel.orderWasPlaced = true
         } catch {
-            confirmationMessage = error.localizedDescription
-            orderWasPlaced = false
+            viewModel.confirmationMessage = error.localizedDescription
+            viewModel.orderWasPlaced = false
         }
         showingConfirmation = true
     }
 }
 
-#Preview {
+#if DEBUG
+struct PreviewOrderPlacing: OrderPlacing {
+    var shouldFail = false
+    func placeOrder(order: Order) async throws -> Order {
+        if shouldFail {
+            throw NetworkingErrors.serverError(statusCode: 500)
+        }
+        return order
+    }
+}
+#endif
+
+#Preview("Success") {
     @Previewable @State var path = NavigationPath()
-    CheckoutView(order: Order(), path: $path)
+    CheckoutView(order: Order(), path: $path, orderPlacer: PreviewOrderPlacing(shouldFail: false))
+}
+
+#Preview("Failure") {
+    @Previewable @State var path = NavigationPath()
+    CheckoutView(order: Order(), path: $path, orderPlacer: PreviewOrderPlacing(shouldFail: true))
 }

@@ -1,7 +1,7 @@
 import Foundation
 
-struct NetworkManager {
-    static func placeOrder(order: Order) async throws -> Order {
+struct NetworkManager: OrderPlacing {
+    func placeOrder(order: Order) async throws -> Order {
         let encoded = try JSONEncoder().encode(order)
         let url = URL(string: "https://reqres.in/api/cupcakes")!
         var request = URLRequest(url: url)
