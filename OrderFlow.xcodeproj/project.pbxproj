@@ -10,9 +10,20 @@
 		C44A4E373063B773002F98D8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C44A4E363063B773002F98D8 /* .gitignore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C4FBA0C73069113700291E20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000100000000;
+			remoteInfo = OrderFlow;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* OrderFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OrderFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C44A4E363063B773002F98D8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		C4FBA0C33069113700291E20 /* OrderFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrderFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -23,7 +34,24 @@
 			);
 			target = 000000000000000100000000 /* OrderFlow */;
 		};
+		C4568C403069819A000DE5DD /* Exceptions for ".github" folder in "OrderFlow" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				workflows/ci.yml,
+			);
+			target = 000000000000000100000000 /* OrderFlow */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		C4568C413069819A000DE5DD /* Exceptions for ".github" folder in "Compile Sources" phase from "OrderFlow" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 000000000000000120000000 /* Sources */;
+			membershipExceptions = (
+				workflows/ci.yml,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		000000000000000000000010 /* OrderFlow */ = {
@@ -39,10 +67,29 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
+		C4568C3C30698166000DE5DD /* .github */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C4568C403069819A000DE5DD /* Exceptions for ".github" folder in "OrderFlow" target */,
+				C4568C413069819A000DE5DD /* Exceptions for ".github" folder in "Compile Sources" phase from "OrderFlow" target */,
+			);
+			path = .github;
+			sourceTree = "<group>";
+		};
+		C4FBA0C43069113700291E20 /* OrderFlowTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OrderFlowTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000130000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		C4FBA0C03069113700291E20 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
 			);
@@ -53,9 +100,11 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				C4568C3C30698166000DE5DD /* .github */,
 				C44A4E363063B773002F98D8 /* .gitignore */,
 				C44A4E383063FF55002F98D8 /* Config */,
 				000000000000000000000010 /* OrderFlow */,
+				C4FBA0C43069113700291E20 /* OrderFlowTests */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000120 /* OrderFlow.app */,
+				C4FBA0C33069113700291E20 /* OrderFlowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,11 +134,33 @@
 			fileSystemSynchronizedGroups = (
 				000000000000000000000010 /* OrderFlow */,
 				C44A4E383063FF55002F98D8 /* Config */,
+				C4568C3C30698166000DE5DD /* .github */,
 			);
 			name = OrderFlow;
 			productName = MyApp;
 			productReference = 000000000000000000000120 /* OrderFlow.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C4FBA0C23069113700291E20 /* OrderFlowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4FBA0CB3069113700291E20 /* Build configuration list for PBXNativeTarget "OrderFlowTests" */;
+			buildPhases = (
+				C4FBA0BF3069113700291E20 /* Sources */,
+				C4FBA0C03069113700291E20 /* Frameworks */,
+				C4FBA0C13069113700291E20 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4FBA0C83069113700291E20 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C4FBA0C43069113700291E20 /* OrderFlowTests */,
+			);
+			name = OrderFlowTests;
+			productName = OrderFlowTests;
+			productReference = C4FBA0C33069113700291E20 /* OrderFlowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -97,11 +169,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					000000000000000100000000 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					C4FBA0C23069113700291E20 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = 000000000000000100000000;
 					};
 				};
 			};
@@ -120,6 +196,7 @@
 			projectRoot = "";
 			targets = (
 				000000000000000100000000 /* OrderFlow */,
+				C4FBA0C23069113700291E20 /* OrderFlowTests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +208,11 @@
 				C44A4E373063B773002F98D8 /* .gitignore in Resources */,
 			);
 		};
+		C4FBA0C13069113700291E20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -139,7 +221,20 @@
 			files = (
 			);
 		};
+		C4FBA0BF3069113700291E20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C4FBA0C83069113700291E20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000100000000 /* OrderFlow */;
+			targetProxy = C4FBA0C73069113700291E20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		000000000000000011000000 /* Debug configuration for PBXProject "OrderFlow" */ = {
@@ -362,6 +457,58 @@
 			};
 			name = Release;
 		};
+		C4FBA0C93069113700291E20 /* Debug configuration for PBXNativeTarget "OrderFlowTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NQAT3LQ67P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kirkursedov.OrderFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OrderFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OrderFlow";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		C4FBA0CA3069113700291E20 /* Release configuration for PBXNativeTarget "OrderFlowTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NQAT3LQ67P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kirkursedov.OrderFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OrderFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OrderFlow";
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -378,6 +525,14 @@
 			buildConfigurations = (
 				000000000000000111000000 /* Debug configuration for PBXNativeTarget "OrderFlow" */,
 				000000000000000112000000 /* Release configuration for PBXNativeTarget "OrderFlow" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		C4FBA0CB3069113700291E20 /* Build configuration list for PBXNativeTarget "OrderFlowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4FBA0C93069113700291E20 /* Debug configuration for PBXNativeTarget "OrderFlowTests" */,
+				C4FBA0CA3069113700291E20 /* Release configuration for PBXNativeTarget "OrderFlowTests" */,
 			);
 			defaultConfigurationName = Release;
 		};
