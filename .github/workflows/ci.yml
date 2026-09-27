@@ -1,23 +1,21 @@
 name: CI
 
 on:
-push:
-branches: [main]
-pull_request:
-branches: [main]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-test:
-runs-on: macos-15
-steps:
-- uses: actions/checkout@v4
-
-- name: Select Xcode
-run: sudo xcode-select -switch /Applications/Xcode_26.app
-
-- name: Run tests
-run: |
-xcodebuild test \
--project OrderFlow.xcodeproj \
--scheme OrderFlow \
--destination 'platform=iOS Simulator,name=iPhone 16'
+  test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_26.app
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -project OrderFlow.xcodeproj \
+            -scheme OrderFlow \
+            -destination 'platform=iOS Simulator,name=iPhone 16'
