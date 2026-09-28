@@ -58,7 +58,7 @@ struct OrderFlowTests {
             order.quantity = 3
             order.addSprinkles = true
 
-            #expect(order.cost == 1.5 + 6)
+            #expect(order.cost == 7.5)
         }
     }
 
