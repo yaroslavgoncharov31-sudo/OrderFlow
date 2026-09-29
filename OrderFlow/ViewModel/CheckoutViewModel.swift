@@ -3,25 +3,35 @@ import Foundation
 extension CheckoutView {
     @Observable
     final class ViewModel {
+        var orderState: OrderPlacementState = .idle
+        var showingConfirmation = false
         let order: Order
         let orderPlacer: OrderPlacing
-        var confirmationMessage = ""
-        var orderWasPlaced = false
 
         init(order: Order, orderPlacer: OrderPlacing = NetworkManager()) {
             self.order = order
             self.orderPlacer = orderPlacer
         }
 
+        var resultMessage: String {
+            switch orderState {
+            case .placed(let message), .failed(let message): message
+            default: ""
+            }
+        }
+
         func placeOrder() async {
+            guard orderState != .placing else {
+                return
+            }
+            orderState = .placing
             do {
                 let finalOrder = try await orderPlacer.placeOrder(order: order)
-                confirmationMessage = "Your order for \(finalOrder.quantity)x \(finalOrder.type.rawValue) cupcakes is on its way!"
-                orderWasPlaced = true
+                orderState = .placed(message: "Your order for \(finalOrder.quantity)x \(finalOrder.type.rawValue) cupcakes is on its way!")
             } catch {
-                confirmationMessage = error.localizedDescription
-                orderWasPlaced = false
+                orderState = .failed(message: "Failed to proceed the order: \(error.localizedDescription)")
             }
+            showingConfirmation = true
         }
     }
 }

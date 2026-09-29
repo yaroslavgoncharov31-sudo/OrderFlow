@@ -2,8 +2,6 @@ import SwiftUI
 
 struct CheckoutView: View {
     var order: Order
-    @State private var showingConfirmation = false
-    @State private var isPlacingOrder = false
     @State private var viewModel: ViewModel
 
     @Binding var path: NavigationPath
@@ -28,16 +26,14 @@ struct CheckoutView: View {
 
                 Text("Your total cost is: \(order.cost, format: .currency(code: "USD"))")
                     .font(.title)
-                if isPlacingOrder {
+                if viewModel.orderState == .placing {
                     ProgressView()
                 } else {
                     Button("Place order") {
-                        isPlacingOrder = true
                         Task {
-                            await placeOrder()
+                            await viewModel.placeOrder()
                         }
                     }
-                    .disabled(isPlacingOrder)
                     .padding()
                 }
             }
@@ -45,30 +41,17 @@ struct CheckoutView: View {
         .navigationTitle("Check out")
         .navigationBarTitleDisplayMode(.inline)
         .scrollBounceBehavior(.basedOnSize)
-        .alert("Order status", isPresented: $showingConfirmation) {
+        .alert("Order status", isPresented: $viewModel.showingConfirmation) {
             Button("OK") {
-                if viewModel.orderWasPlaced {
+                if case .placed = viewModel.orderState {
                     path = NavigationPath()
                     order.reset()
                 }
+                viewModel.orderState = .idle
             }
         } message: {
-            Text(viewModel.confirmationMessage)
+            Text(viewModel.resultMessage)
         }
-    }
-    private func placeOrder() async {
-        isPlacingOrder = true
-        defer { isPlacingOrder = false }
-
-        do {
-            let finalOrder = try await viewModel.orderPlacer.placeOrder(order: order)
-            viewModel.confirmationMessage = "Your order for \(finalOrder.quantity)x \(finalOrder.type.rawValue) cupcakes is on its way!"
-            viewModel.orderWasPlaced = true
-        } catch {
-            viewModel.confirmationMessage = error.localizedDescription
-            viewModel.orderWasPlaced = false
-        }
-        showingConfirmation = true
     }
 }
 
