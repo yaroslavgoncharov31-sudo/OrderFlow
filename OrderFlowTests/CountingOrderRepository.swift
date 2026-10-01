@@ -2,12 +2,12 @@ internal import Foundation
 @testable import OrderFlow
 
 @MainActor
-final class CountingNetworkManager: OrderPlacing {
-     var callCount = 0
+final class CountingOrderRepository: OrderRepository {
+    private(set) var callCount = 0
     private var continuation: CheckedContinuation<Void, Never>?
 
 
-    func placeOrder(order: Order) async throws -> Order {
+    func placeOrder(order: Order, deliveryDetails: DeliveryDetails) async throws -> Order {
         callCount += 1
         await withCheckedContinuation { continuation = $0 }
         return order

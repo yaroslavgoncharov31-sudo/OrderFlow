@@ -1,7 +1,7 @@
 internal import Foundation
 @testable import OrderFlow
 
-struct MockNetworkManager: OrderPlacing {
+struct MockOrderRepository: OrderRepository {
     enum Behavior {
         case success(Order)
         case failure(Error)
@@ -9,8 +9,8 @@ struct MockNetworkManager: OrderPlacing {
 
     var behavior: Behavior
 
-    func placeOrder(order: OrderFlow.Order) async throws -> OrderFlow.Order {
-        switch  behavior {
+    func placeOrder(order: Order, deliveryDetails: DeliveryDetails) async throws -> Order {
+        switch behavior {
         case .success(let order):
             return order
         case .failure(let error):

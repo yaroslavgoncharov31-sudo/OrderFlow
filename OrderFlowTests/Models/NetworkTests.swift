@@ -4,10 +4,19 @@ internal import Testing
 @MainActor
 struct NetworkTests {
 
-    let mockOrder = Order()
+    private(set) var details = DeliveryDetails(
+        name: "TestName",
+        streetAddress: "TestAddress",
+        zip: "1111111",
+        city: "TestCity",
+        email: "example@mail.com"
+    )
 
+    private(set) var order = Order()
     @Test func placeOrder_success_setConfirmation() async throws {
-        let viewModel = CheckoutView.ViewModel(order: Order(), orderPlacer: MockNetworkManager(behavior: .success(mockOrder)))
+        let repo = MockOrderRepository(behavior: .success(order))
+        let useCase = PlaceOrderUseCase(repository: repo)
+        let viewModel = CheckoutView.ViewModel(order: order, placeOrderUseCase: useCase, deliveryDetails: details)
         await viewModel.placeOrder()
 
         #expect(viewModel.orderState == .placed(message: "Your order for 3x Chocolate cupcakes is on its way!"))
@@ -15,7 +24,9 @@ struct NetworkTests {
     }
 
     @Test func placeOrder_serverError_setsFailureMessage() async throws {
-        let viewModel = CheckoutView.ViewModel(order: Order(), orderPlacer: MockNetworkManager(behavior: .failure(NetworkingErrors.serverError(statusCode: 500))))
+        let repo = MockOrderRepository(behavior: .failure(NetworkingErrors.serverError(statusCode: 500)))
+        let useCase = PlaceOrderUseCase(repository: repo)
+        let viewModel = CheckoutView.ViewModel(order: order, placeOrderUseCase: useCase, deliveryDetails: details)
         await viewModel.placeOrder()
 
         #expect(viewModel.orderState == .failed(message: "Failed to proceed the order: Server error (500). Please try again later."))
@@ -23,8 +34,9 @@ struct NetworkTests {
     }
 
     @Test func guardDoubleTap_orderPlacing() async throws {
-        let mock = CountingNetworkManager()
-        let viewModel = CheckoutView.ViewModel(order: mockOrder, orderPlacer: mock)
+        let mock = CountingOrderRepository()
+        let useCase = PlaceOrderUseCase(repository: mock)
+        let viewModel = CheckoutView.ViewModel(order: order, placeOrderUseCase: useCase, deliveryDetails: details)
 
         async let first = viewModel.placeOrder()
         try await Task.sleep(for: .milliseconds(10))
@@ -33,6 +45,6 @@ struct NetworkTests {
         mock.resume()
         _ = await (first, second)
 
-        #expect(await mock.callCount == 1)
+        #expect(mock.callCount == 1)
     }
 }
