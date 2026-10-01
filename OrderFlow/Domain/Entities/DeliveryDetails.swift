@@ -1,6 +1,6 @@
 import Foundation
 
-struct DeliveryDetails: Equatable {
+struct DeliveryDetails: Equatable, Codable {
     var name = ""
     var streetAddress = ""
     var zip = ""

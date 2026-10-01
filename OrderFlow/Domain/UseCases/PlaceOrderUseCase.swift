@@ -7,10 +7,10 @@ enum PlaceOrderError: Error {
 struct PlaceOrderUseCase {
     let repository: OrderRepository
 
-    func execute(order: Order, details: DeliveryDetails) async throws -> Order {
-        guard details.hasValidAddress else {
+    func execute(order: Order, deliveryDetails: DeliveryDetails) async throws -> Order {
+        guard deliveryDetails.hasValidAddress else {
             throw PlaceOrderError.invalidDeliveryDetails
         }
-        return try await repository.placeOrder(order: order, deliveryDetails: details)
+        return try await repository.placeOrder(order: order, deliveryDetails: deliveryDetails)
     }
 }
