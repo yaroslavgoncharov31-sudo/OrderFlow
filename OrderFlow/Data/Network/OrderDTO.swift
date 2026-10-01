@@ -1,4 +1,3 @@
-import Foundation
 
 struct OrderDTO: Codable {
     let type: CupcakeType

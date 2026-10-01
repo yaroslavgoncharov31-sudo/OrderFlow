@@ -11,7 +11,7 @@ struct OrderRepositoryImpl: OrderRepository {
     }
 
     func placeOrder(order: Order, deliveryDetails: DeliveryDetails) async throws -> Order {
-        var dto = Mapper.toDTO(order: order, deliveruDetails: deliveryDetails)
+        let dto = OrderMapper.toDTO(order: order, deliveryDetails: deliveryDetails)
         let encoded = try JSONEncoder().encode(dto)
         var request = URLRequest(url: URL(string: "https://reqres.in/api/cupcakes")!)
         request.httpMethod = "POST"
@@ -28,7 +28,7 @@ struct OrderRepositoryImpl: OrderRepository {
         }
         do {
             let responseDTO = try JSONDecoder().decode(OrderDTO.self, from: data)
-            return Mapper.toDomain(orderDTO: responseDTO).order
+            return OrderMapper.toDomain(orderDTO: responseDTO).order
         } catch {
             throw NetworkingErrors.failedToDecodeData(underlying: error)
         }
