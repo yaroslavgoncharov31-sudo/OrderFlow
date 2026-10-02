@@ -13,7 +13,7 @@ import SwiftUI
     var body: some Scene {
         WindowGroup {
             ContentView(placeOrderUseCase: placeOrderUseCase, deliveryDetailsStore: deliveryDetailsStore)
-                .environment(coordinator)
+                .environment(\.coordinator, coordinator)
         }
     }
 }
