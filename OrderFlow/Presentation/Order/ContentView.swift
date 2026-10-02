@@ -35,12 +35,12 @@ struct ContentView: View {
                     }
                 }
                 Section {
-                    Button("Adress details") {
+                    Button("Address details") {
                         coordinator.showAddress()
                     }
                 }
             }
-            .navigationTitle("Cupcake Corner")
+            .navigationTitle("OrderFlow")
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .addressView:
